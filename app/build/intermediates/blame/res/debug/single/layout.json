@@ -60,6 +60,10 @@
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\abc_dialog_title_material.xml"
     },
     {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_name.xml",
+        "source": "E:\\KeyConnector\\app\\src\\main\\res\\layout\\fragment_name.xml"
+    },
+    {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_navigation_menu_item.xml",
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\1f27f08c8ea6591af77e287b5955e63c473870de\\output\\res\\layout\\design_navigation_menu_item.xml"
     },
@@ -206,5 +210,9 @@
     {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_menu_item_layout.xml",
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\abc_action_menu_item_layout.xml"
+    },
+    {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\client_ip_address_list_view.xml",
+        "source": "E:\\KeyConnector\\app\\src\\main\\res\\layout\\client_ip_address_list_view.xml"
     }
 ]
