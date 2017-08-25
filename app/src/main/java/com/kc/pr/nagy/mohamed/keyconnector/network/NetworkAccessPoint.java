@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 
 import kotlin.jvm.internal.markers.KMutableList;
 
+
 /**
  * Created by mohamednagy on 8/24/2017.
  */
@@ -21,17 +22,15 @@ public class NetworkAccessPoint {
     private WifiManager mWifiManager = null;
     private ClientAsyncTask clientAsyncTask = null;
 
-    private NetworkAccessPoint(WifiManager wifiManager){
-        mWifiManager = wifiManager;
+    private static class InstanceHolder{
+        static final NetworkAccessPoint networkAccessPoint = new NetworkAccessPoint();
     }
 
-    public NetworkAccessPoint setInstance(WifiManager wifiManager){
-        if(mWifiManager == null){
-            NetworkAccessPoint networkAccessPoint =
-                    new NetworkAccessPoint(wifiManager);
-        }
-        return this;
+    public NetworkAccessPoint getInstance(WifiManager wifiManager){
+        InstanceHolder.networkAccessPoint.mWifiManager = wifiManager;
+        return InstanceHolder.networkAccessPoint;
     }
+
 
     public WifiConfiguration getWifiConfiguration(){
 
