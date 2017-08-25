@@ -6532,11 +6532,11 @@
                 "from": {
                     "file": "E:\\KeyConnector\\app\\src\\main\\res\\values\\styles.xml",
                     "position": {
-                        "startLine": 13,
+                        "startLine": 15,
                         "startColumn": 4,
-                        "startOffset": 536,
+                        "startOffset": 540,
                         "endColumn": 90,
-                        "endOffset": 622
+                        "endOffset": 626
                     }
                 }
             },
@@ -6552,12 +6552,12 @@
                 "from": {
                     "file": "E:\\KeyConnector\\app\\src\\main\\res\\values\\styles.xml",
                     "position": {
-                        "startLine": 9,
+                        "startLine": 10,
                         "startColumn": 4,
-                        "startOffset": 382,
-                        "endLine": 12,
+                        "startOffset": 384,
+                        "endLine": 13,
                         "endColumn": 12,
-                        "endOffset": 530
+                        "endOffset": 532
                     }
                 }
             },
@@ -6572,11 +6572,11 @@
                 "from": {
                     "file": "E:\\KeyConnector\\app\\src\\main\\res\\values\\styles.xml",
                     "position": {
-                        "startLine": 14,
+                        "startLine": 17,
                         "startColumn": 4,
-                        "startOffset": 628,
+                        "startOffset": 634,
                         "endColumn": 80,
-                        "endOffset": 704
+                        "endOffset": 710
                     }
                 }
             },

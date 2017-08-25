@@ -1,17 +1,25 @@
 package com.kc.pr.nagy.mohamed.keyconnector.network;
 
+import android.app.LoaderManager;
+import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import kotlin.jvm.internal.markers.KMutableList;
+
 /**
  * Created by mohamednagy on 8/24/2017.
  */
 
 public class NetworkAccessPoint {
+
+    private static final int CLIENTS_LOADER_MANAGER = 1;
+
     private WifiManager mWifiManager = null;
+    private ClientAsyncTask clientAsyncTask = null;
 
     private NetworkAccessPoint(WifiManager wifiManager){
         mWifiManager = wifiManager;
@@ -120,6 +128,13 @@ public class NetworkAccessPoint {
 
         return isEnabled;
     }
-    
+
+    public int startClientsSearch(Context context, KMutableList clientsList, LoaderManager loaderManager){
+        if(clientAsyncTask == null) {
+            clientAsyncTask = new ClientAsyncTask(context, clientsList);
+            loaderManager.initLoader(CLIENTS_LOADER_MANAGER, null, clientAsyncTask);
+        }
+
+    }
 
 }
