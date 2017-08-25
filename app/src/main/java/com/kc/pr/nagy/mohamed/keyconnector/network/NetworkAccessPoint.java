@@ -7,8 +7,7 @@ import android.net.wifi.WifiManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import kotlin.jvm.internal.markers.KMutableList;
+import java.util.List;
 
 
 /**
@@ -18,9 +17,12 @@ import kotlin.jvm.internal.markers.KMutableList;
 public class NetworkAccessPoint {
 
     private static final int CLIENTS_LOADER_MANAGER = 1;
+    private static final int INITIALIZE_LOADER = 0;
+    private static final int RESTART_LOADER = 1;
 
     private WifiManager mWifiManager = null;
     private ClientAsyncTask clientAsyncTask = null;
+
 
     private static class InstanceHolder{
         static final NetworkAccessPoint networkAccessPoint = new NetworkAccessPoint();
@@ -128,11 +130,18 @@ public class NetworkAccessPoint {
         return isEnabled;
     }
 
-    public int startClientsSearch(Context context, KMutableList clientsList, LoaderManager loaderManager){
+    public int startClientsSearch(Context context, List clientsList, LoaderManager loaderManager){
+        int searchState;
+
         if(clientAsyncTask == null) {
-            clientAsyncTask = new ClientAsyncTask(context, clientsList);
-            loaderManager.initLoader(CLIENTS_LOADER_MANAGER, null, clientAsyncTask);
+            loaderManager.initLoader(CLIENTS_LOADER_MANAGER, null, new ClientLoaderMangerCallback(context, clientsList));
+            searchState = INITIALIZE_LOADER;
+        }else{
+            loaderManager.restartLoader(CLIENTS_LOADER_MANAGER, null, new ClientLoaderMangerCallback(context, clientsList));
+            searchState = RESTART_LOADER;
         }
+
+        return searchState;
 
     }
 
