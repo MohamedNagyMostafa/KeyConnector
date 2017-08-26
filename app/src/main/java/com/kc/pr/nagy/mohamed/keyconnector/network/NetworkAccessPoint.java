@@ -1,13 +1,17 @@
 package com.kc.pr.nagy.mohamed.keyconnector.network;
 
-import android.app.LoaderManager;
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.support.v4.app.LoaderManager;
+
+import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientAsyncTask;
+import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientLoaderMangerCallback;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -15,6 +19,8 @@ import java.util.List;
  */
 
 public class NetworkAccessPoint {
+
+    private static final String SSID_NAME_RONDAMLY = "AKYOE1242DAOEUVAOmDemaoEQEwpEOaslkt37890ZXYeoaG";
 
     private static final int CLIENTS_LOADER_MANAGER = 1;
     private static final int INITIALIZE_LOADER = 0;
@@ -24,11 +30,13 @@ public class NetworkAccessPoint {
     private ClientAsyncTask clientAsyncTask = null;
 
 
+    private NetworkAccessPoint(){}
+
     private static class InstanceHolder{
         static final NetworkAccessPoint networkAccessPoint = new NetworkAccessPoint();
     }
 
-    public NetworkAccessPoint getInstance(WifiManager wifiManager){
+    public static NetworkAccessPoint getInstance(WifiManager wifiManager){
         InstanceHolder.networkAccessPoint.mWifiManager = wifiManager;
         return InstanceHolder.networkAccessPoint;
     }
@@ -57,7 +65,9 @@ public class NetworkAccessPoint {
         Boolean processState = false;
 
         try{
-            setWifiApConfiguration = wifiManagerClass.getDeclaredMethod(WifiManagerClass.setWifiApConfiguration.stringMethodName);
+            setWifiApConfiguration = wifiManagerClass.getDeclaredMethod(
+                    WifiManagerClass.setWifiApConfiguration.stringMethodName,
+                    WifiConfiguration.class);
             processState = (Boolean) setWifiApConfiguration.invoke(mWifiManager, wifiConfiguration);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
@@ -121,7 +131,8 @@ public class NetworkAccessPoint {
         Boolean isEnabled = false;
 
         try{
-            setWifiAPEnabled = wifiManagerClass.getDeclaredMethod(WifiManagerClass.setWifiApEnabled.stringMethodName);
+            setWifiAPEnabled = wifiManagerClass.getDeclaredMethod(WifiManagerClass.setWifiApEnabled.stringMethodName,
+                    WifiConfiguration.class, boolean.class);
             isEnabled = (Boolean) setWifiAPEnabled.invoke(mWifiManager, wifiConfiguration, enabled);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
@@ -143,6 +154,33 @@ public class NetworkAccessPoint {
 
         return searchState;
 
+    }
+
+
+    public void generateConfigurationAccessPoint(){
+
+        WifiConfiguration wifiConfiguration = new WifiConfiguration();
+        wifiConfiguration.SSID = String.format("\"%s\"", getSSID());
+        wifiConfiguration.preSharedKey = "\"password\"";
+        wifiConfiguration.status = WifiConfiguration.Status.ENABLED;
+        wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+        wifiConfiguration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+        wifiConfiguration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+        wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+        wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+        wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+
+        setWifiAPEnabled(wifiConfiguration, true);
+    }
+
+    private String getSSID(){
+        String SSID_NAME = "";
+
+        for(int i = 0 ; i < 25 ; i++){
+            SSID_NAME += SSID_NAME_RONDAMLY.charAt(new Random().nextInt(SSID_NAME_RONDAMLY.length() - 1));
+        }
+
+        return SSID_NAME;
     }
 
 }
