@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.support.v4.app.LoaderManager;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientAsyncTask;
 import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientLoaderMangerCallback;
@@ -58,23 +60,6 @@ public class NetworkAccessPoint {
         return wifiConfiguration;
     }
 
-    public boolean setWifiConfiguration(WifiConfiguration wifiConfiguration){
-
-        Method setWifiApConfiguration;
-        Class<WifiManager> wifiManagerClass = WifiManager.class;
-        Boolean processState = false;
-
-        try{
-            setWifiApConfiguration = wifiManagerClass.getDeclaredMethod(
-                    WifiManagerClass.setWifiApConfiguration.stringMethodName,
-                    WifiConfiguration.class);
-            processState = (Boolean) setWifiApConfiguration.invoke(mWifiManager, wifiConfiguration);
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-
-        return processState;
-    }
 
     public boolean isWifiEnabled(){
 
@@ -115,7 +100,10 @@ public class NetworkAccessPoint {
         Boolean isEnabled = false;
 
         try{
-            setWifiEnabled = wifiManagerClass.getDeclaredMethod(WifiManagerClass.setWifiEnabled.stringMethodName);
+            setWifiEnabled = wifiManagerClass.getDeclaredMethod(
+                    WifiManagerClass.setWifiEnabled.stringMethodName,
+                    WifiConfiguration.class,
+                    boolean.class);
             isEnabled = (Boolean) setWifiEnabled.invoke(mWifiManager, wifiConfiguration, enabled);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
@@ -141,14 +129,16 @@ public class NetworkAccessPoint {
         return isEnabled;
     }
 
-    public int startClientsSearch(Context context, List clientsList, LoaderManager loaderManager){
+    public int startClientsSearch(Context context, List clientsList, LoaderManager loaderManager,
+                                  ArrayAdapter<String> clientIpAddressAdapter){
         int searchState;
 
-        if(clientAsyncTask == null) {
-            loaderManager.initLoader(CLIENTS_LOADER_MANAGER, null, new ClientLoaderMangerCallback(context, clientsList));
+        if(!loaderManager.hasRunningLoaders()) {
+            Toast.makeText(context, "start Loader", Toast.LENGTH_SHORT).show();
+            loaderManager.initLoader(CLIENTS_LOADER_MANAGER, null, new ClientLoaderMangerCallback(context, clientsList, clientIpAddressAdapter));
             searchState = INITIALIZE_LOADER;
         }else{
-            loaderManager.restartLoader(CLIENTS_LOADER_MANAGER, null, new ClientLoaderMangerCallback(context, clientsList));
+            loaderManager.restartLoader(CLIENTS_LOADER_MANAGER, null, new ClientLoaderMangerCallback(context, clientsList, clientIpAddressAdapter));
             searchState = RESTART_LOADER;
         }
 
@@ -170,7 +160,12 @@ public class NetworkAccessPoint {
         wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
 
+        if(isWifiEnabled()){
+            mWifiManager.setWifiEnabled(false);
+        }
+
         setWifiAPEnabled(wifiConfiguration, true);
+
     }
 
     private String getSSID(){

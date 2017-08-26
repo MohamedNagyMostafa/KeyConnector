@@ -1,5 +1,9 @@
 [
     {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\notification_action_tombstone.xml"
+    },
+    {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_navigation_item_subheader.xml",
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\1f27f08c8ea6591af77e287b5955e63c473870de\\output\\res\\layout\\design_navigation_item_subheader.xml"
     },
@@ -116,12 +120,20 @@
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\1f27f08c8ea6591af77e287b5955e63c473870de\\output\\res\\layout\\design_layout_tab_text.xml"
     },
     {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\notification_template_icon_group.xml"
+    },
+    {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_part_time.xml",
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\notification_template_part_time.xml"
     },
     {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_toolbar.xml",
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\abc_screen_toolbar.xml"
+    },
+    {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_action.xml",
+        "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\notification_action.xml"
     },
     {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main.xml",
