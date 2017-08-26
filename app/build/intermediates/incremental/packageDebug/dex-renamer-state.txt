@@ -1,4 +1,4 @@
-#Sat Aug 26 22:37:17 EET 2017
+#Sun Aug 27 00:12:23 EET 2017
 base.0=E\:\\KeyConnector\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
 renamed.0=classes.dex
 file.0=E\:\\KeyConnector\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex

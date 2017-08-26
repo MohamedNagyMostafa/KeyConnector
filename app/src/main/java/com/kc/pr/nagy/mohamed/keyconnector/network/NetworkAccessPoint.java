@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.kc.pr.nagy.mohamed.keyconnector.interfaces.MainThreadCallback;
 import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientAsyncTask;
 import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientLoaderMangerCallback;
 
@@ -129,16 +130,21 @@ public class NetworkAccessPoint {
         return isEnabled;
     }
 
-    public int startClientsSearch(Context context, List clientsList, LoaderManager loaderManager,
-                                  ArrayAdapter<String> clientIpAddressAdapter){
+    public int startClientsSearch(Context context, LoaderManager loaderManager,
+                                  MainThreadCallback mainThreadCallback){
         int searchState;
 
         if(!loaderManager.hasRunningLoaders()) {
-            Toast.makeText(context, "start Loader", Toast.LENGTH_SHORT).show();
-            loaderManager.initLoader(CLIENTS_LOADER_MANAGER, null, new ClientLoaderMangerCallback(context, clientsList, clientIpAddressAdapter));
+
+            loaderManager.initLoader(
+                    CLIENTS_LOADER_MANAGER, null,
+                    new ClientLoaderMangerCallback(context, mainThreadCallback));
+
             searchState = INITIALIZE_LOADER;
         }else{
-            loaderManager.restartLoader(CLIENTS_LOADER_MANAGER, null, new ClientLoaderMangerCallback(context, clientsList, clientIpAddressAdapter));
+            loaderManager.restartLoader(
+                    CLIENTS_LOADER_MANAGER, null,
+                    new ClientLoaderMangerCallback(context, mainThreadCallback));
             searchState = RESTART_LOADER;
         }
 

@@ -3144,7 +3144,7 @@ containing a value of this type.
         public static final int chains=0x7f0d0016;
         public static final int checkbox=0x7f0d0062;
         public static final int chronometer=0x7f0d0097;
-        public static final int clientAddressIpListView=0x7f0d008a;
+        public static final int client_address_list_view=0x7f0d008a;
         public static final int clip_horizontal=0x7f0d003a;
         public static final int clip_vertical=0x7f0d003b;
         public static final int collapseActionView=0x7f0d0042;
@@ -3164,7 +3164,6 @@ containing a value of this type.
         public static final int end_padder=0x7f0d00a1;
         public static final int enterAlways=0x7f0d0021;
         public static final int enterAlwaysCollapsed=0x7f0d0022;
-        public static final int errorText=0x7f0d0089;
         public static final int exitUntilCollapsed=0x7f0d0023;
         public static final int expand_activities_button=0x7f0d004c;
         public static final int expanded_menu=0x7f0d0061;
@@ -3247,6 +3246,7 @@ containing a value of this type.
         public static final int status_bar_latest_event_content=0x7f0d0090;
         public static final int submenuarrow=0x7f0d0065;
         public static final int submit_area=0x7f0d0076;
+        public static final int swap_refresh_layout=0x7f0d0089;
         public static final int tabMode=0x7f0d001a;
         public static final int text=0x7f0d00a0;
         public static final int text2=0x7f0d009e;
