@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import com.kc.pr.nagy.mohamed.keyconnector.R
 import com.kc.pr.nagy.mohamed.keyconnector.interfaces.MainThreadCallback
 import com.kc.pr.nagy.mohamed.keyconnector.network.NetworkAccessPoint
@@ -55,8 +54,7 @@ class MainActivityFragment:Fragment(), MainThreadCallback{
 
         MAIN_ACTIVITY_VIEW_HOLDER!!.CLIENT_ADDRESS_LIST_VIEW.onItemClickListener =
                 AdapterView.OnItemClickListener { p0, p1, p2, p3 ->
-                    sendingDataAsyncTask = SendingDataAsyncTask.getInstance(8888, (p1 as TextView).text.toString())
-                    sendingDataAsyncTask!!.connect("hello")
+                    
                 }
         return view
     }

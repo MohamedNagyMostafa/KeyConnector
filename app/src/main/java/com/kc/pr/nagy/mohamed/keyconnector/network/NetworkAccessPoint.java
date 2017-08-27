@@ -12,6 +12,8 @@ import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientLoaderMangerCallback;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.Random;
 
 
@@ -145,6 +147,7 @@ public class NetworkAccessPoint {
                     new ClientLoaderMangerCallback(context, mainThreadCallback));
             searchState = RESTART_LOADER;
         }
+
 
         return searchState;
 
