@@ -1,6 +1,7 @@
 package com.kc.pr.nagy.mohamed.keyconnector.ui
 
 import android.content.Context
+import android.content.Intent
 import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,9 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import com.kc.pr.nagy.mohamed.keyconnector.R
 import com.kc.pr.nagy.mohamed.keyconnector.interfaces.MainThreadCallback
 import com.kc.pr.nagy.mohamed.keyconnector.network.NetworkAccessPoint
+import com.kc.pr.nagy.mohamed.keyconnector.process.Utility
 import com.kc.pr.nagy.mohamed.keyconnector.threads.SendingDataAsyncTask
 
 /**
@@ -36,7 +39,7 @@ class MainActivityFragment:Fragment(), MainThreadCallback{
         clientsIpAddressListAdapter = ArrayAdapter<String>(context, R.layout.client_ip_address_list_view, clientsList)
 
         networkAccessPoint = NetworkAccessPoint.getInstance(wifiManager)
-        MAIN_ACTIVITY_VIEW_HOLDER!!.CLIENT_ADDRESS_LIST_VIEW.adapter = clientsIpAddressListAdapter
+        MAIN_ACTIVITY_VIEW_HOLDER!!.CLIENT_ADDRESS_LIST_VIEW.adapter = clientsIpAddressListAdapter!!
 
         if(isNotAccessPointCreated(savedInstanceState)) {
             //create and open access point.
@@ -54,7 +57,9 @@ class MainActivityFragment:Fragment(), MainThreadCallback{
 
         MAIN_ACTIVITY_VIEW_HOLDER!!.CLIENT_ADDRESS_LIST_VIEW.onItemClickListener =
                 AdapterView.OnItemClickListener { p0, p1, p2, p3 ->
-                    
+                    val computerMouseScreen = Intent(context, ComputerMouseScreenActivity::class.java)
+                    computerMouseScreen.putExtra(Utility.Extras.IP_ADDRESS_EXTRA.value() , (p1 as TextView).text.toString())
+                    activity.startActivity(computerMouseScreen)
                 }
         return view
     }

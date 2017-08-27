@@ -21,21 +21,21 @@ class OnTouchListenerMovingAction(ipAddress: String) : View.OnTouchListener {
             }
         }else {
             if (mPreviousXPosition!! > p1!!.x && mPreviousYPosition!! > p1.y)
-                mSendingDataAsyncTask.connect(MovingAction.DECREASE_X_Y_POSITION)
+                mSendingDataAsyncTask.connect(Utility.MovingAction.DECREASE_X_Y_POSITION)
             else if (mPreviousXPosition!! < p1.x && mPreviousYPosition!! < p1.y)
-                mSendingDataAsyncTask.connect(MovingAction.INCREASING_X_Y_POSITION)
+                mSendingDataAsyncTask.connect(Utility.MovingAction.INCREASING_X_Y_POSITION)
             else if (mPreviousXPosition!! > p1.x && mPreviousYPosition!! < p1.y)
-                mSendingDataAsyncTask.connect(MovingAction.INCREASE_Y_DECREASE_X_POSITION)
+                mSendingDataAsyncTask.connect(Utility.MovingAction.INCREASE_Y_DECREASE_X_POSITION)
             else if (mPreviousXPosition!! < p1.x && mPreviousYPosition!! > p1.y)
-                mSendingDataAsyncTask.connect(MovingAction.INCREASE_X_DECREASE_Y_POSITION)
+                mSendingDataAsyncTask.connect(Utility.MovingAction.INCREASE_X_DECREASE_Y_POSITION)
             else if (mPreviousXPosition!! < p1.x)
-                mSendingDataAsyncTask.connect(MovingAction.INCREASE_X_POSITION)
+                mSendingDataAsyncTask.connect(Utility.MovingAction.INCREASE_X_POSITION)
             else if (mPreviousXPosition!! < p1.x)
-                mSendingDataAsyncTask.connect(MovingAction.DECREASE_X_POSITION)
+                mSendingDataAsyncTask.connect(Utility.MovingAction.DECREASE_X_POSITION)
             else if (mPreviousXPosition!! < p1.y)
-                mSendingDataAsyncTask.connect(MovingAction.INCREASE_Y_POSITION)
+                mSendingDataAsyncTask.connect(Utility.MovingAction.INCREASE_Y_POSITION)
             else if (mPreviousXPosition!! < p1.y)
-                mSendingDataAsyncTask.connect(MovingAction.DECREASE_Y_POSITION)
+                mSendingDataAsyncTask.connect(Utility.MovingAction.DECREASE_Y_POSITION)
         }
         return false
     }

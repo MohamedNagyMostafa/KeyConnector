@@ -20,6 +20,10 @@
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\1f27f08c8ea6591af77e287b5955e63c473870de\\output\\res\\layout\\design_bottom_sheet_dialog.xml"
     },
     {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_computer_mouse_screen.xml",
+        "source": "E:\\KeyConnector\\app\\src\\main\\res\\layout\\activity_computer_mouse_screen.xml"
+    },
+    {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\design_navigation_item_header.xml",
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\1f27f08c8ea6591af77e287b5955e63c473870de\\output\\res\\layout\\design_navigation_item_header.xml"
     },
@@ -136,6 +140,10 @@
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\notification_action.xml"
     },
     {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\content_computer_mouse_screen.xml",
+        "source": "E:\\KeyConnector\\app\\src\\main\\res\\layout\\content_computer_mouse_screen.xml"
+    },
+    {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main.xml",
         "source": "E:\\KeyConnector\\app\\src\\main\\res\\layout\\activity_main.xml"
     },
@@ -150,6 +158,10 @@
     {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_up_container.xml",
         "source": "C:\\Users\\mohamednagy.mohamednagy-PC\\.android\\build-cache\\69229e999dd843ac621b2f2ba7463b79889f193d\\output\\res\\layout\\abc_action_bar_up_container.xml"
+    },
+    {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragment_computer_mouse_screen.xml",
+        "source": "E:\\KeyConnector\\app\\src\\main\\res\\layout\\fragment_computer_mouse_screen.xml"
     },
     {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_expanded_menu_layout.xml",

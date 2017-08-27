@@ -2,6 +2,7 @@ package com.kc.pr.nagy.mohamed.keyconnector.ui
 
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.ListView
 import com.kc.pr.nagy.mohamed.keyconnector.R
 
@@ -13,6 +14,10 @@ class PrViewHolder{
     inner class MainActivityViewHolder(mainActivityView: View){
         val CLIENT_ADDRESS_LIST_VIEW: ListView = mainActivityView.findViewById(R.id.client_address_list_view) as ListView
         val SWAP_REFRESH_LAYOUT: SwipeRefreshLayout = mainActivityView.findViewById(R.id.swap_refresh_layout) as SwipeRefreshLayout
+    }
+
+    inner class ComputerMouserScreenViewHolder(computerMouseScreen: View){
+        val MOUSE_SCREEN_LAYOUT: LinearLayout = computerMouseScreen.findViewById(R.id.mouse_detect_layout) as LinearLayout
     }
 
 }

@@ -2,6 +2,7 @@ package com.kc.pr.nagy.mohamed.keyconnector.threads
 
 import android.os.AsyncTask
 import android.util.Log
+import com.kc.pr.nagy.mohamed.keyconnector.process.Utility
 import java.io.DataOutputStream
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -9,7 +10,7 @@ import java.net.Socket
 /**
  * Created by mohamednagy on 8/25/2017.
  */
-class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : AsyncTask<String, Unit, Unit>() {
+class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : AsyncTask<Utility.MovingAction, Unit, Unit>() {
 
     private var SERVER_PORT:Int = port
     private var SERVER_IP_ADDRESS:String = ipAddress
@@ -21,10 +22,9 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
     private val CONNECTION_DELAY:Int = 2
 
     // States of thread.
-    val IS_RUNNING_STATE = 0
-    val UNDER_WAITING_NEW_PROCESS = 1
-    val IDLE_STATE = 2
-    val CONNECTION_FIELD = 3
+    private val UNDER_WAITING_NEW_PROCESS = 1
+    private val IDLE_STATE = 2
+    private val CONNECTION_FIELD = 3
 
     private var mIsThreadRunning:Int = IDLE_STATE
 
@@ -40,7 +40,7 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
 
     }
 
-    override fun doInBackground(vararg message: String) {
+    override fun doInBackground(vararg movingAction: Utility.MovingAction) {
 
         if(!dataTransferSocket!!.isConnected) {
             try {
@@ -56,7 +56,7 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
             try{
                 Log.e("put data socket", "done")
                 dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
-                dataOutputStream.writeUTF(message[0])
+                dataOutputStream.writeUTF(movingAction[0].value())
                 Log.e("data send", "done")
             }finally {
                 if(dataOutputStream != null)
@@ -74,13 +74,13 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
 
     public fun getState(): Int = mIsThreadRunning
 
-    public fun connect(message:String){
+    public fun connect(movingAction: Utility.MovingAction){
 
         if(dataTransferSocket == null){
             Log.e("create socket", "done")
             dataTransferSocket = Socket()
         }
-        execute(message)
+        execute(movingAction)
     }
 
     public fun disConnect(){
