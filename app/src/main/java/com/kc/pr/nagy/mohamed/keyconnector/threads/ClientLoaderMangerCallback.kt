@@ -11,7 +11,7 @@ import com.kc.pr.nagy.mohamed.keyconnector.interfaces.MainThreadCallback
  */
 class ClientLoaderMangerCallback(context: Context, mainThreadCallback: MainThreadCallback):
         LoaderManager.LoaderCallbacks<Unit>{
-    
+
     private val mContext:Context = context
     private val mMainThreadCallback:MainThreadCallback = mainThreadCallback
 
@@ -21,7 +21,6 @@ class ClientLoaderMangerCallback(context: Context, mainThreadCallback: MainThrea
     }
 
     override fun onLoadFinished(loader: Loader<Unit>?, data: Unit?) {
-        mMainThreadCallback.mainThreadUiRunStopRefresh()
     }
 
 }

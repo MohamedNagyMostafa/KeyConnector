@@ -1,5 +1,9 @@
 [
     {
+        "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_computer_mouse_screen.xml",
+        "source": "E:\\KeyConnector\\app\\src\\main\\res\\menu\\menu_computer_mouse_screen.xml"
+    },
+    {
         "merged": "E:\\KeyConnector\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_main.xml",
         "source": "E:\\KeyConnector\\app\\src\\main\\res\\menu\\menu_main.xml"
     }

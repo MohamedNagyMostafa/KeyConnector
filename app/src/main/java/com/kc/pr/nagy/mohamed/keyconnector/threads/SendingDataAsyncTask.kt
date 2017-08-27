@@ -1,6 +1,8 @@
 package com.kc.pr.nagy.mohamed.keyconnector.threads
 
 import android.os.AsyncTask
+import android.util.Log
+import com.kc.pr.nagy.mohamed.keyconnector.process.Utility
 import java.io.DataOutputStream
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -8,11 +10,11 @@ import java.net.Socket
 /**
  * Created by mohamednagy on 8/25/2017.
  */
-class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : AsyncTask<String, Unit, Unit>() {
+class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : AsyncTask<Utility.MovingAction, Unit, Unit>() {
 
     private var SERVER_PORT:Int = port
     private var SERVER_IP_ADDRESS:String = ipAddress
-    private val TIME_OUT:Int = 500
+    private val TIME_OUT:Int = 5000
 
     // thread connection state
     private val CONNECTION_UNDER_PROCESS:Int = 0
@@ -20,17 +22,17 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
     private val CONNECTION_DELAY:Int = 2
 
     // States of thread.
-    public val IS_RUNNING_STATE = 0
-    public val UNDER_WAITING_NEW_PROCESS = 1
-    public val ERROR = -1
+    private val UNDER_WAITING_NEW_PROCESS = 1
+    private val IDLE_STATE = 2
+    private val CONNECTION_FIELD = 3
 
-    private var mIsThreadRunning:Int = UNDER_WAITING_NEW_PROCESS
+    private var mIsThreadRunning:Int = IDLE_STATE
 
     private var dataTransferSocket:Socket? = null
 
     companion object {
         // to ensure there is no more than one instance is created.
-        public fun getInstance(port: Int, ipAddress: String): SendingDataAsyncTask {
+         fun getInstance(port: Int, ipAddress: String): SendingDataAsyncTask {
             val instance: SendingDataAsyncTask by lazy { SendingDataAsyncTask(port, ipAddress) }
 
             return instance
@@ -38,16 +40,28 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
 
     }
 
-    override fun doInBackground(vararg message: String) {
-        mIsThreadRunning = IS_RUNNING_STATE // setRunningState.
+    override fun doInBackground(vararg movingAction: Utility.MovingAction) {
 
-        var dataOutputStream:DataOutputStream? = null
-        try{
-            dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
-            dataOutputStream.writeUTF(message[0])
-        }finally {
-            if(dataOutputStream != null)
-                dataOutputStream.close()
+        if(!dataTransferSocket!!.isConnected) {
+            try {
+                Log.e("connect socket", "done")
+                dataTransferSocket!!.connect(InetSocketAddress(SERVER_IP_ADDRESS, SERVER_PORT))
+            } catch (e: Exception) {
+                Log.e("error socket", "done")
+                Log.e("error", e.message + e.localizedMessage)
+                mIsThreadRunning = CONNECTION_FIELD
+            }
+        }else{
+            var dataOutputStream: DataOutputStream? = null
+            try{
+                Log.e("put data socket", "done")
+                dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
+                dataOutputStream.writeUTF(movingAction[0].value())
+                Log.e("data send", "done")
+            }finally {
+                if(dataOutputStream != null)
+                    dataOutputStream.close()
+            }
         }
 
     }
@@ -60,32 +74,13 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
 
     public fun getState(): Int = mIsThreadRunning
 
-    public fun connect(message:String):Int{
+    public fun connect(movingAction: Utility.MovingAction){
 
         if(dataTransferSocket == null){
+            Log.e("create socket", "done")
             dataTransferSocket = Socket()
         }
-
-        if(dataTransferSocket!!.isConnected) {
-            try {
-                dataTransferSocket!!.connect(InetSocketAddress(SERVER_IP_ADDRESS, SERVER_PORT), TIME_OUT)
-            } catch (e: Exception) {
-                mIsThreadRunning = ERROR
-            }
-        }
-
-        return when(mIsThreadRunning){
-            UNDER_WAITING_NEW_PROCESS -> {
-                execute(message)
-                CONNECTION_UNDER_PROCESS
-            }
-            IS_RUNNING_STATE -> {
-                CONNECTION_DELAY
-            }
-            else->  {
-                CONNECTION_REFUSED
-            }
-        }
+        execute(movingAction)
     }
 
     public fun disConnect(){
