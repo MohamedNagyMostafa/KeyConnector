@@ -13,7 +13,7 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
 
     private var SERVER_PORT:Int = port
     private var SERVER_IP_ADDRESS:String = ipAddress
-    private val TIME_OUT:Int = 50000
+    private val TIME_OUT:Int = 5000
 
     // thread connection state
     private val CONNECTION_UNDER_PROCESS:Int = 0
@@ -23,9 +23,10 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
     // States of thread.
     val IS_RUNNING_STATE = 0
     val UNDER_WAITING_NEW_PROCESS = 1
-    val ERROR = -1
+    val IDLE_STATE = 2
+    val CONNECTION_FIELD = 3
 
-    private var mIsThreadRunning:Int = UNDER_WAITING_NEW_PROCESS
+    private var mIsThreadRunning:Int = IDLE_STATE
 
     private var dataTransferSocket:Socket? = null
 
@@ -40,8 +41,6 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
     }
 
     override fun doInBackground(vararg message: String) {
-        mIsThreadRunning = IS_RUNNING_STATE // setRunningState.
-
 
         if(!dataTransferSocket!!.isConnected) {
             try {
@@ -50,19 +49,19 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
             } catch (e: Exception) {
                 Log.e("error socket", "done")
                 Log.e("error", e.message + e.localizedMessage)
-                mIsThreadRunning = ERROR
+                mIsThreadRunning = CONNECTION_FIELD
             }
-        }
-
-        var dataOutputStream:DataOutputStream? = null
-        try{
-            Log.e("put data socket", "done")
-            dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
-            dataOutputStream.writeUTF(message[0])
-            Log.e("data send", "done")
-        }finally {
-            if(dataOutputStream != null)
-                dataOutputStream.close()
+        }else{
+            var dataOutputStream: DataOutputStream? = null
+            try{
+                Log.e("put data socket", "done")
+                dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
+                dataOutputStream.writeUTF(message[0])
+                Log.e("data send", "done")
+            }finally {
+                if(dataOutputStream != null)
+                    dataOutputStream.close()
+            }
         }
 
     }
@@ -75,26 +74,13 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String) : Asy
 
     public fun getState(): Int = mIsThreadRunning
 
-    public fun connect(message:String):Int{
+    public fun connect(message:String){
 
         if(dataTransferSocket == null){
             Log.e("create socket", "done")
             dataTransferSocket = Socket()
         }
-
-        return when(mIsThreadRunning){
-            UNDER_WAITING_NEW_PROCESS -> {
-                Log.e("start socket", "done")
-                execute(message)
-                CONNECTION_UNDER_PROCESS
-            }
-            IS_RUNNING_STATE -> {
-                CONNECTION_DELAY
-            }
-            else->  {
-                CONNECTION_REFUSED
-            }
-        }
+        execute(message)
     }
 
     public fun disConnect(){

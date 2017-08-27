@@ -21,7 +21,6 @@ class ClientLoaderMangerCallback(context: Context, mainThreadCallback: MainThrea
     }
 
     override fun onLoadFinished(loader: Loader<Unit>?, data: Unit?) {
-        mMainThreadCallback.mainThreadUiRunStopRefresh()
     }
 
 }

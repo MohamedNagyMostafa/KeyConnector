@@ -30,12 +30,13 @@ class ClientAsyncTask(context :Context, mainThreadCallback: MainThreadCallback)
      */
     override fun loadInBackground() {
         var timer = 0
-
+        mMainThreadCallback.mainThreadUiRunStartRefresh()
         while (timer != SEARCH_TIME_LIMIT){
             getClientsAndUpdate()
             Thread.sleep(THREAD_SLEEP)
             timer += INCREASING_CONSTANT
         }
+        mMainThreadCallback.mainThreadUiRunStopRefresh()
     }
 
     private fun getClientsAndUpdate(){

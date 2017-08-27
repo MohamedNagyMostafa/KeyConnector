@@ -45,6 +45,7 @@ class MainActivityFragment:Fragment(), MainThreadCallback{
         }else{
             networkAccessPoint!!.setWifiAPEnabled(networkAccessPoint!!.wifiConfiguration, true)
         }
+
         //get connection devices
         networkAccessPoint!!.startClientsSearch(context, activity.supportLoaderManager, this)
 
