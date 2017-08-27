@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Sun Aug 27 00:12:24 EET 2017
+#Sun Aug 27 17:12:31 EET 2017
 210.set=ANDROID_RESOURCE
 282.file=E\:\\KeyConnector\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\color\\abc_secondary_text_material_light.xml
 14.set=ANDROID_RESOURCE

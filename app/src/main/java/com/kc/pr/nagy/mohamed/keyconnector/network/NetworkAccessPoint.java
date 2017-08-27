@@ -4,8 +4,7 @@ import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.support.v4.app.LoaderManager;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.kc.pr.nagy.mohamed.keyconnector.interfaces.MainThreadCallback;
 import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientAsyncTask;
@@ -13,7 +12,6 @@ import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientLoaderMangerCallback;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Random;
 
 
@@ -134,7 +132,7 @@ public class NetworkAccessPoint {
                                   MainThreadCallback mainThreadCallback){
         int searchState;
 
-        if(!loaderManager.hasRunningLoaders()) {
+        if(loaderManager.getLoader(CLIENTS_LOADER_MANAGER) == null) {
 
             loaderManager.initLoader(
                     CLIENTS_LOADER_MANAGER, null,
@@ -155,6 +153,12 @@ public class NetworkAccessPoint {
 
     public void generateConfigurationAccessPoint(){
 
+        // close current configuration.
+        if(isWifiApEnabled()){
+            WifiConfiguration currentWifiConfiguration = getWifiConfiguration();
+            setWifiAPEnabled(currentWifiConfiguration, false);
+        }
+        // create new configuration
         WifiConfiguration wifiConfiguration = new WifiConfiguration();
         wifiConfiguration.SSID = String.format("\"%s\"", getSSID());
         wifiConfiguration.preSharedKey = "\"password\"";
@@ -165,12 +169,15 @@ public class NetworkAccessPoint {
         wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
         wifiConfiguration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         wifiConfiguration.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
-
+        // close wifi when it's opened
         if(isWifiEnabled()){
             mWifiManager.setWifiEnabled(false);
         }
-
-        setWifiAPEnabled(wifiConfiguration, true);
+        // set the new access point on.
+        boolean isCreated = setWifiAPEnabled(wifiConfiguration, true);
+        if(isCreated){
+            Log.e("AP is Creater", "SSID : " + wifiConfiguration.SSID );
+        }
 
     }
 
