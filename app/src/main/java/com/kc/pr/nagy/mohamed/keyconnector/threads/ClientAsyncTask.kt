@@ -21,7 +21,6 @@ class ClientAsyncTask(context :Context, mainThreadCallback: MainThreadCallback)
 
     override fun onStartLoading() {
         super.onStartLoading()
-        mMainThreadCallback.mainThreadUiRunStartRefresh()
         forceLoad()
     }
     /**

@@ -13,6 +13,15 @@ class Utility {
         fun value(): String = mValue
     }
 
+    enum class Loaders(value: Int){
+        SENDING_DATA_LOADER(1),
+        CLIENTS_LOADER_MANAGER(2);
+
+        private var mValue = value
+
+        fun value(): Int = mValue
+    }
+
     enum class MovingAction(value: String) {
         INCREASE_X_POSITION("right"),
         INCREASE_Y_POSITION("up"),

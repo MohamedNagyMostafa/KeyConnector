@@ -7,13 +7,12 @@ import android.support.v4.app.LoaderManager;
 import android.util.Log;
 
 import com.kc.pr.nagy.mohamed.keyconnector.interfaces.MainThreadCallback;
+import com.kc.pr.nagy.mohamed.keyconnector.process.Utility;
 import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientAsyncTask;
 import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientLoaderMangerCallback;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 import java.util.Random;
 
 
@@ -25,7 +24,6 @@ public class NetworkAccessPoint {
 
     private static final String SSID_NAME_RONDAMLY = "AKYOE1242DAOEUVAOmDemaoEQEwpEOaslkt37890ZXYeoaG";
 
-    private static final int CLIENTS_LOADER_MANAGER = 1;
     private static final int INITIALIZE_LOADER = 0;
     private static final int RESTART_LOADER = 1;
 
@@ -134,16 +132,16 @@ public class NetworkAccessPoint {
                                   MainThreadCallback mainThreadCallback){
         int searchState;
 
-        if(loaderManager.getLoader(CLIENTS_LOADER_MANAGER) == null) {
+        if(loaderManager.getLoader(Utility.Loaders.CLIENTS_LOADER_MANAGER.value()) == null) {
 
             loaderManager.initLoader(
-                    CLIENTS_LOADER_MANAGER, null,
+                    Utility.Loaders.CLIENTS_LOADER_MANAGER.value(), null,
                     new ClientLoaderMangerCallback(context, mainThreadCallback));
 
             searchState = INITIALIZE_LOADER;
         }else{
             loaderManager.restartLoader(
-                    CLIENTS_LOADER_MANAGER, null,
+                    Utility.Loaders.CLIENTS_LOADER_MANAGER.value(), null,
                     new ClientLoaderMangerCallback(context, mainThreadCallback));
             searchState = RESTART_LOADER;
         }

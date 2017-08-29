@@ -59,6 +59,7 @@ class MainActivityFragment:Fragment(), MainThreadCallback{
                 AdapterView.OnItemClickListener { p0, p1, p2, p3 ->
                     val computerMouseScreen = Intent(context, ComputerMouseScreenActivity::class.java)
                     computerMouseScreen.putExtra(Utility.Extras.IP_ADDRESS_EXTRA.value() , (p1 as TextView).text.toString())
+                    Log.e("start sending", "done");
                     activity.startActivity(computerMouseScreen)
                 }
         return view
@@ -97,11 +98,15 @@ class MainActivityFragment:Fragment(), MainThreadCallback{
     }
 
     override fun mainThreadUiRunStopRefresh() {
-        MAIN_ACTIVITY_VIEW_HOLDER!!.SWAP_REFRESH_LAYOUT.isRefreshing = false
+        activity.runOnUiThread {
+            MAIN_ACTIVITY_VIEW_HOLDER!!.SWAP_REFRESH_LAYOUT.isRefreshing = false
+        }
     }
 
     override fun mainThreadUiRunStartRefresh() {
-        MAIN_ACTIVITY_VIEW_HOLDER!!.SWAP_REFRESH_LAYOUT.isRefreshing = true
+        activity.runOnUiThread {
+            MAIN_ACTIVITY_VIEW_HOLDER!!.SWAP_REFRESH_LAYOUT.isRefreshing = true
+        }
     }
 
 
