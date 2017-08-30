@@ -41,6 +41,9 @@ class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDat
                     mSendingDataAsyncTask.connect(Utility.MovingAction.INCREASE_Y_POSITION)
                 else if (mPreviousXPosition!! < p1.y)
                     mSendingDataAsyncTask.connect(Utility.MovingAction.DECREASE_Y_POSITION)
+
+                mPreviousXPosition = p1.x.toInt()
+                mPreviousYPosition = p1.y.toInt()
             }
         }
         return true

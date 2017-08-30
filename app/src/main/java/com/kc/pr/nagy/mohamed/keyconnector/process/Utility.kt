@@ -6,7 +6,7 @@ package com.kc.pr.nagy.mohamed.keyconnector.process
 class Utility {
 
     enum class Extras(value :String){
-        IP_ADDRESS_EXTRA("up-left");
+        IP_ADDRESS_EXTRA("ip-address");
 
         private var mValue = value
 
