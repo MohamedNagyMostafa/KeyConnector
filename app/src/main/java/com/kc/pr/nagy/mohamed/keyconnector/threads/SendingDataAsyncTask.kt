@@ -17,48 +17,43 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
     private var SERVER_PORT:Int = port
     private var SERVER_IP_ADDRESS:String = ipAddress
-    private var movingAction:Utility.MovingAction? = null
     private var dataTransferSocket:Socket? = Socket()
 
+    object Action{
+        val IDLE_STATE = 1;
+         val WAITING_NEW_PROCESS = 2;
+        @JvmStatic var movingAction:Utility.MovingAction? = null
+        @JvmStatic var mThreadState = IDLE_STATE
+    }
     override fun onStartLoading() {
         super.onStartLoading()
         forceLoad()
     }
 
     override fun loadInBackground() {
-        var dataOutputStream: DataOutputStream? = null
+        Action.mThreadState = Action.WAITING_NEW_PROCESS
+        dataTransferSocket!!.connect(InetSocketAddress(SERVER_IP_ADDRESS, SERVER_PORT))
 
-        if(!dataTransferSocket!!.isConnected) {
+        while(true){
+            var dataOutputStream:DataOutputStream? = null
             try {
                 Log.e("connect socket", "done")
-                dataTransferSocket!!.connect(InetSocketAddress(SERVER_IP_ADDRESS, SERVER_PORT))
+                dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
+                if (Action.movingAction != null) {
+                    dataOutputStream.writeUTF(Action.movingAction!!.value())
+                    Log.e("send ", Action.movingAction!!.value())
+                }
             } catch (e: Exception) {
                 Log.e("error socket", "done")
                 Log.e("error", e.message + e.localizedMessage)
-            }
+                break;
 
-            try {
-                Log.e("put data socket", "done")
-                dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
-                if (movingAction != null)
-                    dataOutputStream.writeUTF(movingAction!!.value())
-                Log.e("data send", "done")
-            } finally {
-                if (dataOutputStream != null)
-                    dataOutputStream.close()
-            }
-        }else {
-            try {
-                Log.e("put data socket", "done")
-                dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
-                if (movingAction != null)
-                    dataOutputStream.writeUTF(movingAction!!.value())
-                Log.e("data send", "done")
-            } finally {
+            }finally {
                 if (dataOutputStream != null)
                     dataOutputStream.close()
             }
         }
+        Action.mThreadState = Action.IDLE_STATE
 
     }
 
@@ -67,7 +62,6 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
          fun getInstance(port: Int, ipAddress: String, context: Context,
                          sendingDataCallback: SendingDataCallback): SendingDataAsyncTask {
             val instance: SendingDataAsyncTask by lazy { SendingDataAsyncTask(port, ipAddress, context, sendingDataCallback = sendingDataCallback) }
-
             return instance
         }
 
@@ -75,8 +69,9 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
     fun connect(movingAction: Utility.MovingAction){
 
-        this.movingAction = movingAction;
-        sendingDataCallback.connect()
+        Action.movingAction = movingAction;
+        if(Action.mThreadState == Action.IDLE_STATE)
+            sendingDataCallback.connect()
     }
 
     fun disConnect(){

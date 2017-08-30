@@ -20,13 +20,12 @@ class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDat
         Log.e("called","done");
         if(p1!!.action == MotionEvent.ACTION_MOVE) {
             if (mPreviousXPosition == null || mPreviousYPosition == null) {
-                if (p1 != null) {
                     Log.e("initial touch", "done")
                     mPreviousXPosition = p1.x.toInt()
                     mPreviousYPosition = p1.y.toInt()
-                }
+
             } else {
-                if (mPreviousXPosition!! > p1!!.x && mPreviousYPosition!! > p1.y)
+                if (mPreviousXPosition!! > p1.x && mPreviousYPosition!! > p1.y)
                     mSendingDataAsyncTask.connect(Utility.MovingAction.DECREASE_X_Y_POSITION)
                 else if (mPreviousXPosition!! < p1.x && mPreviousYPosition!! < p1.y)
                     mSendingDataAsyncTask.connect(Utility.MovingAction.INCREASING_X_Y_POSITION)
