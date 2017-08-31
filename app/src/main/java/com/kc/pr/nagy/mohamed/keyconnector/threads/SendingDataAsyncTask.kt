@@ -17,13 +17,13 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
     private var SERVER_PORT:Int = port
     private var SERVER_IP_ADDRESS:String = ipAddress
-    private var dataTransferSocket:Socket? = Socket()
 
     object Action{
         val IDLE_STATE = 1;
          val WAITING_NEW_PROCESS = 2;
         @JvmStatic var movingAction:Utility.MovingAction? = null
         @JvmStatic var mThreadState = IDLE_STATE
+        @JvmStatic var newData = false
     }
     override fun onStartLoading() {
         super.onStartLoading()
@@ -32,26 +32,25 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
     override fun loadInBackground() {
         Action.mThreadState = Action.WAITING_NEW_PROCESS
-        dataTransferSocket!!.connect(InetSocketAddress(SERVER_IP_ADDRESS, SERVER_PORT))
+        val dataTransferSocket = Socket()
+        dataTransferSocket.connect(InetSocketAddress(SERVER_IP_ADDRESS, SERVER_PORT))
 
         while(true){
+            while(!Action.newData);
             var dataOutputStream:DataOutputStream? = null
             try {
                 Log.e("connect socket", "done")
-                dataOutputStream = DataOutputStream(dataTransferSocket!!.getOutputStream())
+                dataOutputStream = DataOutputStream(dataTransferSocket.getOutputStream())
                 if (Action.movingAction != null) {
-                    dataOutputStream.writeUTF(Action.movingAction!!.value())
-                    Log.e("send ", Action.movingAction!!.value())
+                    dataOutputStream.writeInt(Action.movingAction!!.value())
                 }
             } catch (e: Exception) {
                 Log.e("error socket", "done")
                 Log.e("error", e.message + e.localizedMessage)
                 break;
 
-            }finally {
-                if (dataOutputStream != null)
-                    dataOutputStream.close()
             }
+            Action.newData =false
         }
         Action.mThreadState = Action.IDLE_STATE
 
@@ -74,9 +73,9 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
             sendingDataCallback.connect()
     }
 
-    fun disConnect(){
-        Log.e("close socket","done")
-        if(dataTransferSocket != null)
-            dataTransferSocket!!.close()
+    fun notifyNewData(){
+        Action.newData = true
     }
+
+
 }

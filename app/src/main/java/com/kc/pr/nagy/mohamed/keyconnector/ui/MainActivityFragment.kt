@@ -182,14 +182,5 @@ class MainActivityFragment:Fragment(), MainThreadCallback, SendingDataCallback{
     }
 
 
-    /**
-     * Called when the Fragment is no longer resumed.  This is generally
-     * tied to [Activity.onPause] of the containing
-     * Activity's lifecycle.
-     */
-    override fun onPause() {
-        if(sendingDataAsyncTask != null)
-            sendingDataAsyncTask!!.disConnect()
-        super.onPause()
-    }
+
 }

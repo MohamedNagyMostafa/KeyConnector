@@ -22,18 +22,18 @@ class Utility {
         fun value(): Int = mValue
     }
 
-    enum class MovingAction(value: String) {
-        INCREASE_X_POSITION("right"),
-        INCREASE_Y_POSITION("up"),
-        INCREASING_X_Y_POSITION("up-right"),
-        DECREASE_X_POSITION("left"),
-        DECREASE_Y_POSITION("down"),
-        DECREASE_X_Y_POSITION("down-left"),
-        INCREASE_X_DECREASE_Y_POSITION("down-right"),
-        INCREASE_Y_DECREASE_X_POSITION("up-left");
+    enum class MovingAction(value: Int) {
+        INCREASE_X_POSITION(0x001),
+        INCREASE_Y_POSITION(0x002),
+        DECREASE_X_POSITION(0x004),
+        DECREASE_Y_POSITION(0x005),
+        INCREASE_X_Y_POSITION(0x003),
+        DECREASE_X_Y_POSITION(0x006),
+        INCREASE_X_DECREASE_Y_POSITION(0x007),
+        INCREASE_Y_DECREASE_X_POSITION(0x008);
 
         private var mValue = value
 
-        fun value(): String = mValue
+        fun value(): Int = mValue
     }
 }
