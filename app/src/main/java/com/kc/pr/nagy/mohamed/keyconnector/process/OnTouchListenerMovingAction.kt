@@ -16,7 +16,7 @@ class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDat
         @JvmStatic var x:Int? = null
         @JvmStatic var y:Int? = null
     }
-    private val TOUCH_FACTOR:Float = 0.001f
+    private val TOUCH_FACTOR:Float = 2f
     private var mSendingDataAsyncTask:SendingDataAsyncTask =
             SendingDataAsyncTask.getInstance(8888, ipAddress, context, sendingDataCallback)
 
@@ -25,47 +25,47 @@ class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDat
         if(p1!!.action == MotionEvent.ACTION_MOVE) {
             if (Position.x == null || Position.y == null) {
                     Log.e("initial touch", "done")
-                    Position.x = p1.x.toInt()
-                    Position.y = p1.y.toInt()
+                    Position.x = Math.round(p1.x)
+                    Position.y = Math.round(p1.y)
 
             } else {
                 Log.e("x data", "prev : " + Position.x + " new : " + p1.x)
                 Log.e("y data", "prev : " + Position.y + " new : " + p1.y)
 
-                if (Position.x!! > p1.x.toInt() + 1 && Position.y!! > p1.y.toInt() + 1) {
+                if (Position.x!! > Math.round(p1.x) + TOUCH_FACTOR && Position.y!! > Math.round(p1.y) + TOUCH_FACTOR) {
                     mSendingDataAsyncTask.addNewAction(Utility.MovingAction.DECREASE_X_Y_POSITION)
                     Log.e("dis ", "dec x,y")
-                }else if (Position.x!! < p1.x.toInt() - 1 && Position.y!! < p1.y.toInt() - 1) {
+                }else if (Position.x!! < Math.round(p1.x) - TOUCH_FACTOR && Position.y!! < Math.round(p1.y) - TOUCH_FACTOR) {
                     mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_X_Y_POSITION)
                     Log.e("dis ", "inc x,y")
 
-                }else if (Position.x!! > p1.x.toInt() + 1&& Position.y!! < p1.y.toInt() - 1) {
+                }else if (Position.x!! > Math.round(p1.x) + TOUCH_FACTOR && Position.y!! < Math.round(p1.y) - TOUCH_FACTOR) {
                     mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_Y_DECREASE_X_POSITION)
                     Log.e("dis ", "dec x, inc y")
 
-                }else if (Position.x!! < p1.x.toInt() - 1 && Position.y!! > p1.y.toInt() + 1) {
+                }else if (Position.x!! < Math.round(p1.x) - TOUCH_FACTOR && Position.y!! > Math.round(p1.y) + TOUCH_FACTOR) {
                     mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_X_DECREASE_Y_POSITION)
                     Log.e("dis ", "dec y, inc x")
 
-                }else if (Position.x!! < p1.x.toInt()) {
+                }else if (Position.x!! < Math.round(p1.x)) {
                     mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_X_POSITION)
                     Log.e("dis ", "inc x")
 
-                }else if (Position.x!! > p1.x.toInt()) {
+                }else if (Position.x!! > Math.round(p1.x)) {
                     mSendingDataAsyncTask.addNewAction(Utility.MovingAction.DECREASE_X_POSITION)
                     Log.e("dis ", "dec x")
-                }else if (Position.y!! < p1.y.toInt()) {
+                }else if (Position.y!! < Math.round(p1.y)) {
                     mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_Y_POSITION)
                     Log.e("dis ", "inc y")
-                }else if (Position.y!! > p1.y.toInt()) {
+                }else if (Position.y!! > Math.round(p1.y)) {
                     mSendingDataAsyncTask.addNewAction(Utility.MovingAction.DECREASE_Y_POSITION)
                     Log.e("dis ", "dec x")
                 }else{
                     Log.e("dix","not defined")
                 }
 
-                Position.x = p1.x.toInt()
-                Position.y = p1.y.toInt()
+                Position.x = Math.round(p1.x)
+                Position.y = Math.round(p1.y)
 
             }
 
