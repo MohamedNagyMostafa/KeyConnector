@@ -41,7 +41,8 @@
         <activity
             android:name="com.kc.pr.nagy.mohamed.keyconnector.ui.ComputerMouseScreenActivity"
             android:label="@string/title_activity_computer_mouse_screen"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

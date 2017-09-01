@@ -36,6 +36,7 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
         dataTransferSocket.connect(InetSocketAddress(SERVER_IP_ADDRESS, SERVER_PORT))
 
         while(true){
+            
             while(!Action.newData);
             var dataOutputStream:DataOutputStream? = null
             try {
