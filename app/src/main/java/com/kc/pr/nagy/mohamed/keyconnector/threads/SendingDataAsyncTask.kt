@@ -7,6 +7,7 @@ import com.kc.pr.nagy.mohamed.keyconnector.process.Utility
 import java.io.DataOutputStream
 import java.net.InetSocketAddress
 import java.net.Socket
+import java.util.*
 
 /**
  * Created by mohamednagy on 8/25/2017.
@@ -20,14 +21,14 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
     object Action{
         val IDLE_STATE = 1;
-         val WAITING_NEW_PROCESS = 2;
-        @JvmStatic var movingAction:Utility.MovingAction? = null
+        val WAITING_NEW_PROCESS = 2;
+        @JvmStatic var actionsQueue:Queue<Utility.MovingAction> = LinkedList<Utility.MovingAction>()
         @JvmStatic var mThreadState = IDLE_STATE
-        @JvmStatic var newData = false
     }
     override fun onStartLoading() {
         super.onStartLoading()
         forceLoad()
+
     }
 
     override fun loadInBackground() {
@@ -36,22 +37,19 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
         dataTransferSocket.connect(InetSocketAddress(SERVER_IP_ADDRESS, SERVER_PORT))
 
         while(true){
-            
-            while(!Action.newData);
+            while(Action.actionsQueue.isEmpty());
             var dataOutputStream:DataOutputStream? = null
             try {
                 Log.e("connect socket", "done")
                 dataOutputStream = DataOutputStream(dataTransferSocket.getOutputStream())
-                if (Action.movingAction != null) {
-                    dataOutputStream.writeInt(Action.movingAction!!.value())
-                }
+                dataOutputStream.writeInt(Action.actionsQueue.poll().value())
+
             } catch (e: Exception) {
                 Log.e("error socket", "done")
                 Log.e("error", e.message + e.localizedMessage)
                 break;
 
             }
-            Action.newData =false
         }
         Action.mThreadState = Action.IDLE_STATE
 
@@ -67,15 +65,12 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
     }
 
-    fun connect(movingAction: Utility.MovingAction){
+    fun addNewAction(movingAction: Utility.MovingAction){
 
-        Action.movingAction = movingAction;
+       Action.actionsQueue.add(movingAction)
+
         if(Action.mThreadState == Action.IDLE_STATE)
             sendingDataCallback.connect()
-    }
-
-    fun notifyNewData(){
-        Action.newData = true
     }
 
 
