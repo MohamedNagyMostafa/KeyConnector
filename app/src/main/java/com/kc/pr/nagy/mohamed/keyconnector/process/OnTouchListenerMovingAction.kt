@@ -11,64 +11,51 @@ import com.kc.pr.nagy.mohamed.keyconnector.threads.SendingDataCallback
  * Created by mohamednagy on 8/28/2017.
  */
 class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDataCallback: SendingDataCallback) : View.OnTouchListener {
-    
+
+    //private val TOUCH_PC_FACTOR:Float = 4f;
     object Position{
-        @JvmStatic var x:Int? = null
-        @JvmStatic var y:Int? = null
+        @JvmStatic var x:Float? = null
+        @JvmStatic var y:Float? = null
     }
     private val TOUCH_FACTOR:Float = 2f
     private var mSendingDataAsyncTask:SendingDataAsyncTask =
             SendingDataAsyncTask.getInstance(8888, ipAddress, context, sendingDataCallback)
 
     override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+        when(p1!!.action){
+            MotionEvent.ACTION_MOVE ->{
 
-        if(p1!!.action == MotionEvent.ACTION_MOVE) {
-            if (Position.x == null || Position.y == null) {
-                    Log.e("initial touch", "done")
-                    Position.x = Math.round(p1.x)
-                    Position.y = Math.round(p1.y)
+                    Log.e("called start", "start")
+                    Log.e("x data", "prev : " + Position.x + " new : " + p1.x)
+                    Log.e("y data", "prev : " + Position.y + " new : " + p1.y)
 
-            } else {
-                Log.e("x data", "prev : " + Position.x + " new : " + p1.x)
-                Log.e("y data", "prev : " + Position.y + " new : " + p1.y)
+                    val moving_X_Distance = Math.round((p1.x - Position.x!!))
+                    val moving_Y_Distance = Math.round((p1.y - Position.y!!))
+                    val movingPositionCoordinates = MovingPositionCoordinates(
+                            moving_X_Distance , moving_Y_Distance )
 
-                if (Position.x!! > Math.round(p1.x) + TOUCH_FACTOR && Position.y!! > Math.round(p1.y) + TOUCH_FACTOR) {
-                    mSendingDataAsyncTask.addNewAction(Utility.MovingAction.DECREASE_X_Y_POSITION)
-                    Log.e("dis ", "dec x,y")
-                }else if (Position.x!! < Math.round(p1.x) - TOUCH_FACTOR && Position.y!! < Math.round(p1.y) - TOUCH_FACTOR) {
-                    mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_X_Y_POSITION)
-                    Log.e("dis ", "inc x,y")
+                    mSendingDataAsyncTask.addNewAction(movingPositionCoordinates)
 
-                }else if (Position.x!! > Math.round(p1.x) + TOUCH_FACTOR && Position.y!! < Math.round(p1.y) - TOUCH_FACTOR) {
-                    mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_Y_DECREASE_X_POSITION)
-                    Log.e("dis ", "dec x, inc y")
 
-                }else if (Position.x!! < Math.round(p1.x) - TOUCH_FACTOR && Position.y!! > Math.round(p1.y) + TOUCH_FACTOR) {
-                    mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_X_DECREASE_Y_POSITION)
-                    Log.e("dis ", "dec y, inc x")
+                    Position.x = p1.x
+                    Position.y = p1.y
+                    Log.e("called end", "end")
 
-                }else if (Position.x!! < Math.round(p1.x)) {
-                    mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_X_POSITION)
-                    Log.e("dis ", "inc x")
-
-                }else if (Position.x!! > Math.round(p1.x)) {
-                    mSendingDataAsyncTask.addNewAction(Utility.MovingAction.DECREASE_X_POSITION)
-                    Log.e("dis ", "dec x")
-                }else if (Position.y!! < Math.round(p1.y)) {
-                    mSendingDataAsyncTask.addNewAction(Utility.MovingAction.INCREASE_Y_POSITION)
-                    Log.e("dis ", "inc y")
-                }else if (Position.y!! > Math.round(p1.y)) {
-                    mSendingDataAsyncTask.addNewAction(Utility.MovingAction.DECREASE_Y_POSITION)
-                    Log.e("dis ", "dec x")
-                }else{
-                    Log.e("dix","not defined")
-                }
-
-                Position.x = Math.round(p1.x)
-                Position.y = Math.round(p1.y)
 
             }
+            MotionEvent.ACTION_UP ->{
+                    Log.e("touch up", "done")
+                    Position.x = null
+                    Position.y = null
+            }
 
+            MotionEvent.ACTION_DOWN ->{
+                    Log.e("initial Down", "done")
+                    Position.x = p1.x
+                    Position.y = p1.y
+
+
+            }
         }
         return true
     }

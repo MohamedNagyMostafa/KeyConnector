@@ -3,7 +3,7 @@ package com.kc.pr.nagy.mohamed.keyconnector.threads
 import android.content.Context
 import android.support.v4.content.AsyncTaskLoader
 import android.util.Log
-import com.kc.pr.nagy.mohamed.keyconnector.process.Utility
+import com.kc.pr.nagy.mohamed.keyconnector.process.MovingPositionCoordinates
 import java.io.DataOutputStream
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -22,7 +22,7 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
     object Action{
         val IDLE_STATE = 1;
         val WAITING_NEW_PROCESS = 2;
-        @JvmStatic var actionsQueue:Queue<Utility.MovingAction> = LinkedList<Utility.MovingAction>()
+        @JvmStatic var actionsQueue:Queue<MovingPositionCoordinates> = LinkedList<MovingPositionCoordinates>()
         @JvmStatic var mThreadState = IDLE_STATE
     }
     override fun onStartLoading() {
@@ -38,11 +38,13 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
         while(true){
             while(Action.actionsQueue.isEmpty());
-            var dataOutputStream:DataOutputStream? = null
+            var dataOutputStream:DataOutputStream?
             try {
                 Log.e("connect socket", "done")
                 dataOutputStream = DataOutputStream(dataTransferSocket.getOutputStream())
-                dataOutputStream.writeInt(Action.actionsQueue.poll().value())
+                val actionData = Action.actionsQueue.poll()
+
+                dataOutputStream.writeUTF(encodeData(actionData))
 
             } catch (e: Exception) {
                 Log.e("error socket", "done")
@@ -65,13 +67,15 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
     }
 
-    fun addNewAction(movingAction: Utility.MovingAction){
+    fun addNewAction(movingPositionCoordinates: MovingPositionCoordinates){
 
-       Action.actionsQueue.add(movingAction)
+        Action.actionsQueue.add(movingPositionCoordinates)
 
         if(Action.mThreadState == Action.IDLE_STATE)
             sendingDataCallback.connect()
     }
 
-
+    private fun encodeData(actionData: MovingPositionCoordinates): String = StringBuilder()
+            .append(actionData.x_coordinateDistance).append("_")
+            .append(actionData.y_coordinateDistance).toString()
 }
