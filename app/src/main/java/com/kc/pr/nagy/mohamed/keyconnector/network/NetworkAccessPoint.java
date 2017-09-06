@@ -128,6 +128,15 @@ public class NetworkAccessPoint {
         return isEnabled;
     }
 
+    /**
+     * To start search about the connected devices to access point.
+     * If there is loader is created before restart that loader again.
+     * if not initialize new one.
+     * @param context   context of view which display clients
+     * @param loaderManager loader manager for current activity
+     * @param mainThreadCallback    
+     * @return
+     */
     public int startClientsSearch(Context context, LoaderManager loaderManager,
                                   MainThreadCallback mainThreadCallback){
         int searchState;
