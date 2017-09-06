@@ -12,12 +12,10 @@ import com.kc.pr.nagy.mohamed.keyconnector.threads.SendingDataCallback
  */
 class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDataCallback: SendingDataCallback) : View.OnTouchListener {
 
-    //private val TOUCH_PC_FACTOR:Float = 4f;
     object Position{
         @JvmStatic var x:Float? = null
         @JvmStatic var y:Float? = null
     }
-    private val TOUCH_FACTOR:Float = 2f
     private var mSendingDataAsyncTask:SendingDataAsyncTask =
             SendingDataAsyncTask.getInstance(8888, ipAddress, context, sendingDataCallback)
 
@@ -54,7 +52,7 @@ class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDat
                     Position.x = p1.x
                     Position.y = p1.y
 
-
+                    mSendingDataAsyncTask.addNewAction(ClickAction(Utility.Click.LEFT_CLICK.value()))
             }
         }
         return true

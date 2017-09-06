@@ -3,8 +3,10 @@ package com.kc.pr.nagy.mohamed.keyconnector.threads
 import android.content.Context
 import android.support.v4.content.AsyncTaskLoader
 import android.util.Log
+import com.kc.pr.nagy.mohamed.keyconnector.process.ClickAction
 import com.kc.pr.nagy.mohamed.keyconnector.process.MovingPositionCoordinates
 import java.io.DataOutputStream
+import java.io.IOError
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.util.*
@@ -22,7 +24,7 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
     object Action{
         val IDLE_STATE = 1;
         val WAITING_NEW_PROCESS = 2;
-        @JvmStatic var actionsQueue:Queue<MovingPositionCoordinates> = LinkedList<MovingPositionCoordinates>()
+        @JvmStatic var actionsQueue:Queue<Any> = LinkedList<Any>()
         @JvmStatic var mThreadState = IDLE_STATE
     }
     override fun onStartLoading() {
@@ -67,15 +69,24 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
 
     }
 
-    fun addNewAction(movingPositionCoordinates: MovingPositionCoordinates){
+    fun addNewAction(action: Any){
 
-        Action.actionsQueue.add(movingPositionCoordinates)
+        Action.actionsQueue.add(action)
 
         if(Action.mThreadState == Action.IDLE_STATE)
             sendingDataCallback.connect()
     }
 
-    private fun encodeData(actionData: MovingPositionCoordinates): String = StringBuilder()
-            .append(actionData.x_coordinateDistance).append("_")
-            .append(actionData.y_coordinateDistance).toString()
+    /**
+     * Determine which action will be send to pc.
+     * Action type .. Moving action and click action.
+     */
+    private fun encodeData(actionData: Any): String{
+        return when (actionData) {
+            is MovingPositionCoordinates -> StringBuilder().append(actionData.x_coordinateDistance).append("_")
+                    .append(actionData.y_coordinateDistance).toString()
+            is ClickAction -> StringBuilder().append(actionData.getClickType()).toString()
+            else -> throw IOError(Throwable("no data to send"))
+        }
+    }
 }

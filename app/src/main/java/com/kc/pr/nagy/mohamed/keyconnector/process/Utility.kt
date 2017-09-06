@@ -22,16 +22,9 @@ class Utility {
         fun value(): Int = mValue
     }
 
-    enum class MovingAction(value: Int) {
-        INCREASE_X_POSITION(0x001),
-        INCREASE_Y_POSITION(0x002),
-        DECREASE_X_POSITION(0x004),
-        DECREASE_Y_POSITION(0x005),
-        INCREASE_X_Y_POSITION(0x003),
-        DECREASE_X_Y_POSITION(0x006),
-        INCREASE_X_DECREASE_Y_POSITION(0x007),
-        INCREASE_Y_DECREASE_X_POSITION(0x008);
-
+    enum class Click(value: Int){
+        RIGHT_CLICK(0x00B1),
+        LEFT_CLICK(0x00C2);
         private var mValue = value
 
         fun value(): Int = mValue
