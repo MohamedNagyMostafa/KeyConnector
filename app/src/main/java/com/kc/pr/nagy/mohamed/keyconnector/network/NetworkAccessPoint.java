@@ -8,8 +8,8 @@ import android.util.Log;
 
 import com.kc.pr.nagy.mohamed.keyconnector.interfaces.MainThreadCallback;
 import com.kc.pr.nagy.mohamed.keyconnector.process.Utility;
-import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientAsyncTask;
-import com.kc.pr.nagy.mohamed.keyconnector.threads.ClientLoaderMangerCallback;
+import com.kc.pr.nagy.mohamed.keyconnector.threads.clients.ClientAsyncTask;
+import com.kc.pr.nagy.mohamed.keyconnector.threads.clients.ClientLoaderMangerCallback;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
