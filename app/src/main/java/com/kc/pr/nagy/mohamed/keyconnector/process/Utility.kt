@@ -25,7 +25,10 @@ class Utility {
 
     enum class Click(value: Int){
         RIGHT_CLICK(0x00B1),
-        LEFT_CLICK(0x00C2);
+        LEFT_CLICK(0x00C2),
+        LEFT_CLICK_SELECT(0x00C3),
+        LEFT_CLICK_SELECT_RELEASE(0x00C4);
+
         private var mValue = value
 
         fun value(): Int = mValue

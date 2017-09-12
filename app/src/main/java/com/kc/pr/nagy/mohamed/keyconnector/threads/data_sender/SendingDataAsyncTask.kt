@@ -2,7 +2,6 @@ package com.kc.pr.nagy.mohamed.keyconnector.threads.data_sender
 
 import android.content.Context
 import android.support.v4.content.AsyncTaskLoader
-import android.util.Log
 import com.kc.pr.nagy.mohamed.keyconnector.process.click.ClickAction
 import com.kc.pr.nagy.mohamed.keyconnector.process.moving.MovingPositionCoordinates
 import java.io.DataOutputStream
@@ -42,15 +41,12 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
             while(Action.actionsQueue.isEmpty());
             var dataOutputStream:DataOutputStream?
             try {
-                Log.e("connect socket", "done")
                 dataOutputStream = DataOutputStream(dataTransferSocket.getOutputStream())
                 val actionData = Action.actionsQueue.poll()
 
                 dataOutputStream.writeUTF(encodeData(actionData))
 
             } catch (e: Exception) {
-                Log.e("error socket", "done")
-                Log.e("error", e.message + e.localizedMessage)
                 break;
 
             }
