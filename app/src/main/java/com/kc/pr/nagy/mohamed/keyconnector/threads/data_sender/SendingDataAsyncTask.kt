@@ -3,7 +3,6 @@ package com.kc.pr.nagy.mohamed.keyconnector.threads.data_sender
 import android.content.Context
 import android.support.v4.content.AsyncTaskLoader
 import com.kc.pr.nagy.mohamed.keyconnector.process.click.ClickAction
-import com.kc.pr.nagy.mohamed.keyconnector.process.moving.MovingPositionCoordinates
 import java.io.DataOutputStream
 import java.io.IOError
 import java.net.InetSocketAddress
@@ -77,12 +76,10 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
      * Determine which action will be send to pc.
      * Action type .. Moving action and click action.
      */
-    private fun encodeData(actionData: Any): String{
-        return when (actionData) {
-            is MovingPositionCoordinates -> StringBuilder().append(actionData.x_coordinateDistance).append("_")
-                    .append(actionData.y_coordinateDistance).toString()
+    private fun encodeData(actionData: Any): String = when (actionData) {
+            is String  -> actionData
             is ClickAction -> StringBuilder().append(actionData.getClickType()).toString()
             else -> throw IOError(Throwable("no data to send"))
-        }
+
     }
 }
