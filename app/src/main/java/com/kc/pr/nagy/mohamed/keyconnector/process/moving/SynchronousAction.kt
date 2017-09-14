@@ -40,15 +40,16 @@ class SynchronousAction(private val sendingDataAsyncTask: SendingDataAsyncTask){
 
     private fun notifyDataChanged(){ isDataChanged = true }
 
-    private fun hasWork(): Boolean{
-        if(isDataChanged){
+    private fun hasWork(): Boolean = when (isDataChanged){
+        true ->{
             isDataChanged = !isDataChanged
-            return !isDataChanged
+            isDataChanged
         }
-        return isDataChanged
+        else-> isDataChanged
     }
 
-    fun isStarted(): Boolean = asyncState
+
+    private fun isStarted(): Boolean = asyncState
 
     private fun encodePoint(coordinates: MovingPositionCoordinates): String =
             StringBuilder().append(coordinates.x_coordinate).append(SPLITTER)
