@@ -28,15 +28,17 @@ class SynchronousAction(private val sendingDataAsyncTask: SendingDataAsyncTask){
     }
 
     private var isDataChanged: Boolean = false
+    private var asyncState: Boolean = false
 
 
-    fun startAsync(){
-        synchronousActionHandler.postDelayed(requestNewActionThread, DELAY)
+    fun startAsync(){ if(!isStarted()) synchronousActionHandler.postDelayed(requestNewActionThread, DELAY) }
+
+    fun update(point: MovingPositionCoordinates){
+        pointsQueue!!.add(point)
+        notifyDataChanged()
     }
 
-    fun notifyDataChanged(){
-        isDataChanged = true
-    }
+    private fun notifyDataChanged(){ isDataChanged = true }
 
     private fun hasWork(): Boolean{
         if(isDataChanged){
@@ -45,6 +47,8 @@ class SynchronousAction(private val sendingDataAsyncTask: SendingDataAsyncTask){
         }
         return isDataChanged
     }
+
+    fun isStarted(): Boolean = asyncState
 
     private fun encodePoint(coordinates: MovingPositionCoordinates): String =
             StringBuilder().append(coordinates.x_coordinate).append(SPLITTER)

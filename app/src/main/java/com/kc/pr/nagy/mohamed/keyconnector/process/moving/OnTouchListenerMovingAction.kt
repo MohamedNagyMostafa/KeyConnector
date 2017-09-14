@@ -21,7 +21,9 @@ class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDat
 
     private val mSendingDataAsyncTask: SendingDataAsyncTask =
             SendingDataAsyncTask.getInstance(SERVER_PORT, ipAddress, context, sendingDataCallback)
+
     private val mClickEventAction: ClickEventAction = ClickEventAction(mSendingDataAsyncTask)
+    private val mSynchronousAction: SynchronousAction = SynchronousAction(mSendingDataAsyncTask)
 
     override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
         when(p1!!.action){
@@ -52,6 +54,7 @@ class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDat
                 Position.x = p1.x
                 Position.y = p1.y
                 mClickEventAction.startListener()
+                mSendingDataAsyncTask.startLoading()
                 return true
             }
         }
