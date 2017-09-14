@@ -34,30 +34,27 @@ class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDat
                 val movingPositionCoordinates = MovingPositionCoordinates(
                         moving_X_Distance, moving_Y_Distance)
                 if(moving_X_Distance != 0 || moving_Y_Distance != 0)
-                    mSendingDataAsyncTask.addNewAction(movingPositionCoordinates)
+                    mSynchronousAction.update(movingPositionCoordinates)
 
                 mClickEventAction.notifyTouchChanging(moving_X_Distance + moving_Y_Distance)
                 Position.x = p1.x
                 Position.y = p1.y
-
-                return true
 
             }
             MotionEvent.ACTION_UP ->{
                 Position.x = null
                 Position.y = null
                 mClickEventAction.notifyTouchChanging()
-                return true
             }
 
             MotionEvent.ACTION_DOWN ->{
                 Position.x = p1.x
                 Position.y = p1.y
+
                 mClickEventAction.startListener()
-                mSendingDataAsyncTask.startLoading()
-                return true
+                mSynchronousAction.startAsync()
             }
         }
-        return true;
+        return true
     }
 }
