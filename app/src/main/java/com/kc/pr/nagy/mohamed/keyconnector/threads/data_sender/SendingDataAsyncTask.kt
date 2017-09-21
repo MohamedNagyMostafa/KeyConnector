@@ -77,7 +77,7 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
      * Action type .. Moving action and click action.
      */
     private fun encodeData(actionData: Any): String = when (actionData) {
-            is String  -> actionData
+            is String  -> actionData.substring(0, actionData.length -1)
             is ClickAction -> StringBuilder().append(actionData.getClickType()).toString()
             else -> throw IOError(Throwable("no data to send"))
 
