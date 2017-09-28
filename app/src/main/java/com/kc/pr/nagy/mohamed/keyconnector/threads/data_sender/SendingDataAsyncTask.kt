@@ -77,12 +77,10 @@ class SendingDataAsyncTask private constructor(port:Int, ipAddress:String, conte
      * Determine which action will be send to pc.
      * Action type .. Moving action and click action.
      */
-    private fun encodeData(actionData: Any): String{
-        return when (actionData) {
-            is MovingPositionCoordinates -> StringBuilder().append(actionData.x_coordinateDistance).append("_")
-                    .append(actionData.y_coordinateDistance).toString()
-            is ClickAction -> StringBuilder().append(actionData.getClickType()).toString()
-            else -> throw IOError(Throwable("no data to send"))
-        }
+    private fun encodeData(actionData: Any): String = when (actionData) {
+        is MovingPositionCoordinates -> StringBuilder().append(actionData.x_coordinateDistance).append("_")
+                .append(actionData.y_coordinateDistance).append("_").append(actionData.duration).toString()
+        is ClickAction -> StringBuilder().append(actionData.getClickType()).toString()
+        else -> throw IOError(Throwable("no data to send"))
     }
 }

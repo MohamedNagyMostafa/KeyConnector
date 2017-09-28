@@ -11,48 +11,31 @@ import com.kc.pr.nagy.mohamed.keyconnector.threads.data_sender.SendingDataCallba
  * Created by mohamednagy on 8/28/2017.
  */
 class OnTouchListenerMovingAction(ipAddress: String, context:Context, sendingDataCallback: SendingDataCallback) : View.OnTouchListener {
-
     private val SERVER_PORT = 8888
 
-    object Position{
-        @JvmStatic var x:Float? = null
-        @JvmStatic var y:Float? = null
-    }
-
     private val mSendingDataAsyncTask: SendingDataAsyncTask =
-            SendingDataAsyncTask.getInstance(SERVER_PORT, ipAddress, context, sendingDataCallback)
-    private val mClickEventAction: ClickEventAction = ClickEventAction(mSendingDataAsyncTask)
+            SendingDataAsyncTask.getInstance(port =  SERVER_PORT, ipAddress =  ipAddress, context = context,
+                    sendingDataCallback = sendingDataCallback)
+    private val mClickEventAction: ClickEventAction = ClickEventAction(ASYNC_DATA_SENDER_TASK =  mSendingDataAsyncTask)
+    private val mMovingEventAction: MovingEvent = MovingEvent(mSendingDataAsyncTask =  mSendingDataAsyncTask)
 
-    override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-        when(p1!!.action){
+    override fun onTouch(p0: View?, motionEvent: MotionEvent?): Boolean {
+
+        when(motionEvent!!.action){
             MotionEvent.ACTION_MOVE ->{
-
-                val moving_X_Distance:Int = (p1.x - Position.x!!).toInt()
-                val moving_Y_Distance:Int = (p1.y - Position.y!!).toInt()
-                val movingPositionCoordinates = MovingPositionCoordinates(
-                        moving_X_Distance, moving_Y_Distance)
-                if(moving_X_Distance != 0 || moving_Y_Distance != 0)
-                    mSendingDataAsyncTask.addNewAction(movingPositionCoordinates)
-
-                mClickEventAction.notifyTouchChanging(moving_X_Distance + moving_Y_Distance)
-                Position.x = p1.x
-                Position.y = p1.y
-
-                return true
-
+                mMovingEventAction.update(motionEvent)
+                mClickEventAction.notifyTouchChanging(mMovingEventAction.getDistance())
+                mMovingEventAction.updateMotionCompleted()
             }
+
             MotionEvent.ACTION_UP ->{
-                Position.x = null
-                Position.y = null
                 mClickEventAction.notifyTouchChanging()
-                return true
+                mMovingEventAction.stopDetect()
             }
 
             MotionEvent.ACTION_DOWN ->{
-                Position.x = p1.x
-                Position.y = p1.y
+                mMovingEventAction.update(motionEvent)
                 mClickEventAction.startListener()
-                return true
             }
         }
         return true;
